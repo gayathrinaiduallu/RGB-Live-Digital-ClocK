@@ -5,13 +5,16 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
 ![Pygame](https://img.shields.io/badge/Pygame-2.0%2B-green?logo=pygame)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+![Author](https://img.shields.io/badge/Author-gayathrinaiduallu-purple?logo=github)
 
 ---
 
 ## 📋 Table of Contents
 
+- [About](#-about)
 - [Features](#-features)
 - [Preview](#-preview)
+- [Sample Output](#-sample-output)
 - [Getting Started](#-getting-started)
 - [How Location Works](#-how-location-works)
 - [Color Reference](#-color-reference)
@@ -20,7 +23,16 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 - [Dependencies](#-dependencies)
 - [Limitations & Disadvantages](#-limitations--disadvantages)
 - [Future Enhancements](#-future-enhancements)
+- [Author](#-author)
 - [License](#-license)
+
+---
+
+## 📖 About
+
+**RGB Live Digital Clock** is a desktop clock application built with Python and Pygame. It automatically detects your location via IP geolocation and fetches real-time temperature data — no API keys or manual setup required. The clock displays the current time in a colorful retro RGB style with a blinking separator, live weather, and today's date.
+
+> Repository: [github.com/gayathrinaiduallu/RGB-Live-Digital-Clock](https://github.com/gayathrinaiduallu/RGB-Live-Digital-Clock)
 
 ---
 
@@ -49,6 +61,64 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 
 ---
 
+## 🖥️ Sample Output
+
+### Console / Terminal Output
+
+When you run `python clock.py`, the terminal prints live status messages:
+
+```
+[Location] Detected: Austin (30.2672, -97.7431)
+[Weather] Temp updated: 84°F (Austin)
+[Weather] Temp updated: 83°F (Austin)
+```
+
+**What each line means:**
+
+| Line | When it appears | Meaning |
+|------|----------------|---------|
+| `[Location] Detected: <City> (<lat>, <lon>)` | Once at startup | IP geolocation succeeded |
+| `[Location] Detected via ipinfo: ...` | Once at startup | Primary API failed, backup used |
+| `[Location] Could not detect. Using default: New York City.` | Once at startup | Both APIs failed, using fallback |
+| `[Weather] Temp updated: XX°F (<City>)` | Every 15 minutes | Weather fetch succeeded |
+| `[Weather] Fetch Error: <reason>` | If network fails | Old value kept, no crash |
+
+---
+
+### Clock Window Layout
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   SAT      8  :  4  2  PM         84 °F                         │
+│                                                                 │
+│                                                                 │
+│                              05/23                              │
+│                          MONTH  DATE                            │
+└─────────────────────────────────────────────────────────────────┘
+  purple   pink  yel  yel cyan   blue
+```
+
+| Panel | Content | Color |
+|-------|---------|-------|
+| Left | Day of week (`MON`–`SUN`) + AM/PM | Purple |
+| Center | Hour digits | Hot pink |
+| Center | Blinking `:` separator | Yellow (even sec) / hidden (odd sec) |
+| Center right | First minute digit | Yellow |
+| Center right | Second minute digit | Cyan |
+| Right top | Live temperature + `°F` | Sky blue |
+| Right bottom | Date as `MM/DD` + label | Sky blue |
+
+---
+
+### Behavior Notes
+
+- The **colon blinks** every second — visible on even seconds, hidden on odd.
+- Temperature shows `--` on startup until the first weather fetch completes (~1–2 sec).
+- If `digital.ttf` is missing, falls back to system Arial — functional but less stylized.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -60,8 +130,8 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/gayathrinaiduallu/RGB-Live-Digital-ClocK.git
-cd rgb-clock
+git clone https://github.com/gayathrinaiduallu/RGB-Live-Digital-Clock.git
+cd RGB-Live-Digital-Clock
 
 # 2. Install dependencies
 pip install -r requirements.txt
@@ -107,11 +177,10 @@ Weather coordinates are set once at launch and reused every refresh cycle.
 
 ```
 RGB-Live-Digital-Clock/
-├──DigitalClock.py          # Main application
+├── Digitalclock.py          # Main application
 ├── requirements.txt  # Python dependencies
 ├── .gitignore        # Git ignore rules
 ├── LICENSE           # MIT license
-├── digital.ttf       # (Optional) LCD-style font — add your own
 └── README.md
 ```
 
@@ -119,13 +188,13 @@ RGB-Live-Digital-Clock/
 
 ## 🔧 Customization
 
-Open `DigitalClock.py` and tweak these constants near the top:
+Open `clock.py` and tweak these constants:
 
 ```python
-# Change temperature unit — swap "fahrenheit" to "celsius" in the URL
+# Change temperature unit — swap "fahrenheit" to "celsius"
 f"&current=temperature_2m&temperature_unit=fahrenheit"
 
-# Change refresh interval (seconds)
+# Change weather refresh interval (seconds)
 time.sleep(900)   # 900 = 15 minutes
 
 # Change window size
@@ -134,86 +203,103 @@ WIDTH, HEIGHT = 900, 350
 # Change colors
 PINK   = (240, 32, 190)
 YELLOW = (255, 222, 23)
-# ... etc.
+CYAN   = (0, 229, 255)
+PURPLE = (176, 38, 255)
+BLUE   = (0, 191, 255)
 ```
 
 ---
 
 ## 📦 Dependencies
 
-| Package | Purpose |
-|---------|---------|
-| `pygame` | Window, rendering, event loop |
-| `requests` | HTTP calls for geolocation & weather |
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `pygame` | ≥ 2.0.0 | Window, rendering, event loop |
+| `requests` | ≥ 2.28.0 | HTTP calls for geolocation & weather |
 
-All weather and location data is fetched from **free, no-key APIs**.
+All weather and location data is fetched from **free, no-key APIs**:
+- Weather: [Open-Meteo](https://open-meteo.com/)
+- Location: [ip-api.com](http://ip-api.com) / [ipinfo.io](https://ipinfo.io)
 
 ---
 
 ## ⚠️ Limitations & Disadvantages
 
 ### Location Accuracy
-- IP geolocation can be inaccurate by **30–100+ miles**, especially on mobile networks, VPNs, or shared ISPs. The detected city may not match your actual location.
-- Location is detected **once at startup** — if you move or switch networks, you must restart the app.
+- IP geolocation can be inaccurate by **30–100+ miles**, especially on VPNs, mobile networks, or shared ISPs.
+- Location is detected **once at startup** — moving or switching networks requires a restart.
 
 ### Weather Data
-- Temperature updates only every **15 minutes**. The displayed value may lag behind real conditions.
-- Uses **Open-Meteo's forecast endpoint**, not a real-time sensor, so there can be minor discrepancies vs. actual current conditions.
-- No weather details beyond temperature — no humidity, wind, precipitation, or "feels like."
+- Temperature updates only every **15 minutes** and may lag behind real conditions.
+- Uses Open-Meteo's forecast endpoint — minor discrepancies vs. actual sensor readings possible.
+- No additional weather details — no humidity, wind, precipitation, or "feels like."
 
-### Font Dependency
-- Without `digital.ttf`, the clock falls back to Arial/system fonts which look significantly less authentic. The font file must be sourced and placed manually.
+### Font
+- Without `digital.ttf`, falls back to Arial bold — still works but looks less authentic.
+- The font file must be sourced and placed manually; it is not included in the repo.
 
 ### Platform & Display
-- Designed for a **fixed 900×350 window** — does not scale or go fullscreen automatically.
-- No **HiDPI / Retina display** support; text may appear blurry on high-resolution screens.
-- Runs only as a **desktop app** — no web, mobile, or embedded support.
+- Fixed **900×350 window** — does not scale or go fullscreen automatically.
+- No **HiDPI / Retina display** support; may appear blurry on high-resolution screens.
+- Desktop only — no web, mobile, or embedded support.
 
-### Network Dependency
-- Requires an active internet connection on startup for location detection. Offline launch always falls back to New York City coordinates.
-- Subject to rate limits or downtime of the free third-party geolocation APIs.
+### Network
+- Requires internet on startup for location detection; offline launch falls back to New York City.
+- Subject to rate limits or downtime of the free third-party APIs.
 
-### Maintainability
-- All logic is in a **single file** (`clock.py`) — harder to test or extend as the project grows.
-- No configuration file; all tweaks require editing source code directly.
+### Code Structure
+- All logic lives in a **single file** — harder to test or extend as the project grows.
+- No config file; all changes require editing source code directly.
 
 ---
 
 ## 🚀 Future Enhancements
 
 ### Display & UI
-- [ ] **Fullscreen / resizable window** with layout that scales dynamically
-- [ ] **Theme switcher** — toggle between dark, light, and custom color palettes at runtime
+- [ ] **Fullscreen / resizable window** with dynamic layout scaling
+- [ ] **Theme switcher** — toggle dark, light, and custom palettes at runtime
 - [ ] **HiDPI support** for sharp rendering on Retina and 4K screens
-- [ ] **Screensaver mode** — dim display after inactivity, brighten on mouse move
+- [ ] **Screensaver mode** — dim after inactivity, brighten on mouse move
 
 ### Weather & Location
-- [ ] **Manual location override** via a config file or command-line argument (`--city London`)
-- [ ] **Celsius / Fahrenheit toggle** with a keypress (e.g. `F` key)
-- [ ] **Extended weather panel** — humidity, wind speed, weather icon (☀️ 🌧️ ❄️)
+- [ ] **Manual location override** via config file or CLI (`--city London`)
+- [ ] **Celsius / Fahrenheit toggle** with a keypress (`F` key)
+- [ ] **Extended weather panel** — humidity, wind speed, weather icons (☀️ 🌧️ ❄️)
 - [ ] **"Feels like" temperature** using Open-Meteo's `apparent_temperature` field
-- [ ] **Hourly forecast bar** showing the next 6–12 hours across the bottom
+- [ ] **Hourly forecast bar** across the bottom showing next 6–12 hours
 
 ### Clock & Time
 - [ ] **24-hour mode toggle** (`H` key)
-- [ ] **Second-hand display** as a small progress bar or arc
-- [ ] **Multiple time zones** — display two cities side by side
-- [ ] **Alarm / reminder system** — set times that trigger a visual flash and sound
+- [ ] **Seconds display** as a progress bar or arc
+- [ ] **Multiple time zones** — two cities side by side
+- [ ] **Alarm / reminder system** — visual flash and sound at set times
 
 ### Technical
-- [ ] **Config file support** (`config.json` or `config.ini`) for colors, units, refresh rate
-- [ ] **Refactor into modules** — `weather.py`, `location.py`, `renderer.py` for better testability
+- [ ] **Config file** (`config.json`) for colors, units, refresh rate — no code edits needed
+- [ ] **Modular refactor** — `weather.py`, `location.py`, `renderer.py`
 - [ ] **Unit tests** for location parsing and weather fetching
-- [ ] **GitHub Actions CI** to lint with `flake8` and run tests on push
+- [ ] **GitHub Actions CI** — lint with `flake8`, run tests on push
 - [ ] **Executable builds** via PyInstaller for Windows (`.exe`), macOS (`.app`), Linux binary
-- [ ] **Raspberry Pi support** — optimized rendering for small displays like the official 7" touchscreen
+- [ ] **Raspberry Pi support** — optimized for small displays like the 7" touchscreen
 
 ---
-## 👤 Author
 
-**Gayathri**  
-Python Programming Intern — Intern pe (2026) 
+## 👩‍💻 Author
+
+**Gayathri Allu**
+
+- GitHub: [@gayathrinaiduallu](https://github.com/gayathrinaiduallu)
+- Repository: [RGB-Live-Digital-Clock](https://github.com/gayathrinaiduallu/RGB-Live-Digital-Clock)
+
+Feel free to open an [issue](https://github.com/gayathrinaiduallu/RGB-Live-Digital-Clock/issues) or submit a [pull request](https://github.com/gayathrinaiduallu/RGB-Live-Digital-Clock/pulls) for bugs, suggestions, or new features!
+
+---
 
 ## 📄 License
 
-MIT License — feel free to fork, modify, and share.
+This project is licensed under the **MIT License** — free to use, modify, and distribute.
+See the [LICENSE](LICENSE) file for full details.
+
+---
+
+*Built with ❤️ using Python & Pygame*
