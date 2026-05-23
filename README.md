@@ -63,7 +63,7 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 
 ## 🖥️ Sample Output
 
-> 📄 Full output is available in [`output.png`](output.png)
+> 📄 Full output is available in [`output.jpeg`](output.jpeg)
 
 ### Console / Terminal Output
 
@@ -183,7 +183,7 @@ Weather coordinates are set once at launch and reused for every 15-minute refres
 ```
 RGB-Live-Digital-Clock/
 ├── DigitalClock.py            # Main application
-├── output              # Console & window output
+├── output.jpeg             # Console & window output
 ├── requirements.txt    # Python dependencies
 ├── .gitignore          # Git ignore rules
 ├── LICENSE             # MIT license
