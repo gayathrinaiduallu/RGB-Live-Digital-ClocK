@@ -51,10 +51,10 @@ A vibrant, full-screen digital clock built with **Pygame** featuring live weathe
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  SAT    8 : 4 2      72                                  │
-│  PM                  °F                                  │
+│  SAT    8 : 4 2 PM      72  °F                           │
+│                                                          │
 │                      05/23                               │
-│              MONTH       DATE                            │
+│                  MONTH  DATE                             │
 └──────────────────────────────────────────────────────────┘
 ```
 *(Left: Day/AM-PM in purple | Center: Time in pink/yellow/cyan | Right: Temp & Date in blue)*
